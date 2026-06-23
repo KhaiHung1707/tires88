@@ -8,6 +8,10 @@
 /* The toggle checkbox is never visible; label[for] still toggles it. */
 #t88 .t88-mnav-cb { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
 
+/* Header: solid black background + larger logo (all screen sizes) */
+#t88 header { background: #000 !important; }
+#t88 header img { height: 80px !important; }
+
 /* Hamburger button — hidden on desktop, shown on tablet/mobile */
 #t88 .t88-burger {
   display: none;
@@ -103,7 +107,7 @@
   #t88 [data-rail] { scroll-padding-left: 18px !important; }
 
   /* Bigger header logo on mobile */
-  #t88 header img { height: 64px !important; }
+  #t88 header img { height: 80px !important; }
 
   /* Bigger, easier-to-tap phone numbers on mobile */
   #t88 a[href^="tel:"] { font-size: 18px !important; }
