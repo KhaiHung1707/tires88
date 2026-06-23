@@ -1,0 +1,254 @@
+/* ==========================================================================
+   TIRES88 — responsive enhancements + mobile navigation
+   Loaded after the runtime's base/responsive styles. Only adds what the
+   original design was missing: a real mobile menu and a few small-screen
+   refinements. Desktop design is untouched.
+   ========================================================================== */
+
+/* The toggle checkbox is never visible; label[for] still toggles it. */
+#t88 .t88-mnav-cb { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
+
+/* Hamburger button — hidden on desktop, shown on tablet/mobile */
+#t88 .t88-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0 10px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+#t88 .t88-burger span {
+  display: block;
+  height: 2px;
+  width: 22px;
+  border-radius: 2px;
+  background: var(--tx);
+  transition: transform .28s ease, opacity .2s ease;
+}
+
+/* Mobile panel — collapsed by default */
+#t88 .t88-mpanel { display: none; }
+
+/* ---------- Tablet / mobile ---------- */
+@media (max-width: 980px) {
+  /* Reveal the burger */
+  #t88 .t88-burger { display: flex; }
+
+  /* Animate burger into an X when the menu is open */
+  #t88 .t88-mnav-cb:checked ~ div .t88-burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  #t88 .t88-mnav-cb:checked ~ div .t88-burger span:nth-child(2) { opacity: 0; }
+  #t88 .t88-mnav-cb:checked ~ div .t88-burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* The dropdown panel */
+  #t88 .t88-mpanel {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 20px;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height .34s ease, opacity .26s ease, padding .34s ease;
+  }
+  #t88 .t88-mnav-cb:checked ~ .t88-mpanel {
+    max-height: 460px;
+    opacity: 1;
+    padding-top: 8px;
+    padding-bottom: 18px;
+  }
+  #t88 .t88-mpanel a {
+    display: block;
+    padding: 14px 6px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--tx);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+  #t88 .t88-mpanel a:last-child { border-bottom: none; }
+  #t88 .t88-mpanel .t88-mpanel-login { color: var(--tx2); font-weight: 500; }
+  #t88 .t88-mpanel .t88-mpanel-cta {
+    margin-top: 12px;
+    text-align: center;
+    color: var(--on-accent);
+    background: var(--accent);
+    border-radius: 999px;
+    border-bottom: none;
+    box-shadow: 0 8px 22px -8px var(--glow);
+  }
+
+  /* Keep the sticky header bar from being crowded on small screens */
+  #t88 header > div { gap: 12px !important; }
+}
+
+/* ---------- Hide the burger again on real desktops (safety) ---------- */
+@media (min-width: 981px) {
+  #t88 .t88-burger,
+  #t88 .t88-mpanel { display: none !important; }
+}
+
+/* ---------- Extra small-screen polish ---------- */
+@media (max-width: 640px) {
+  #t88 .t88-burger { width: 42px; height: 42px; }
+  /* Prevent any horizontal-scroll rails from causing page-level overflow */
+  #t88 [data-rail] { scroll-padding-left: 18px !important; }
+}
+
+/* Very narrow phones: tighten the hero wordmark + CTA row */
+@media (max-width: 380px) {
+  #t88 header a[style*="0 8px 22px -8px var(--glow)"] { padding: 8px 13px !important; font-size: 13px !important; }
+}
+
+/* ==========================================================================
+   ROBUST MOBILE LAYER
+   The original design is desktop-first with many fixed-width / multi-column
+   inline styles. These rules target by PROPERTY NAME (rendered verbatim by
+   React) so they catch every grid / fixed-width box regardless of its exact
+   values — the previous value-specific overrides missed several.
+   ========================================================================== */
+
+/* ---- Tablet & below: cap oversized fixed-width boxes, flatten bento spans ---- */
+@media (max-width: 980px) {
+  /* Any element with a hard pixel width wider than a phone shrinks to fit.
+     Covers content wrappers AND decorative glow/blur blobs. */
+  #t88 [style*="width: 1440px"],
+  #t88 [style*="width: 1260px"],
+  #t88 [style*="width: 1200px"],
+  #t88 [style*="width: 1100px"],
+  #t88 [style*="width: 1000px"],
+  #t88 [style*="width: 900px"],
+  #t88 [style*="width: 540px"],
+  #t88 [style*="width: 480px"] {
+    width: auto !important;
+    max-width: 100% !important;
+  }
+
+  /* Flatten any bento column/row spans so cards never hang off the edge */
+  #t88 [style*="grid-column"] { grid-column: auto !important; }
+  #t88 [style*="grid-row"]    { grid-row: auto !important; }
+  /* React merges grid-column + grid-row into the grid-area shorthand; reset it
+     too, otherwise spanning items force implicit columns and the grid never
+     collapses to one column (this is what squished the bento image). */
+  #t88 [style*="grid-area"]   { grid-area: auto !important; }
+
+  /* Belt-and-suspenders: nothing inside the page may force horizontal scroll */
+  #t88 { overflow-x: hidden; }
+}
+
+/* ---- Phone: collapse EVERY grid to a single column ---- */
+@media (max-width: 680px) {
+  #t88 [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+  /* Keep the intentional horizontal product rail scrollable (it is flex, not grid) */
+  #t88 [data-rail] { display: flex !important; }
+}
+
+/* ---- Hero 3-card carousel: keep the centre card within a phone screen ---- */
+@media (max-width: 560px) {
+  #t88 [data-hero-card] { width: clamp(260px, 86vw, 360px) !important; }
+}
+
+/* ---- Small phones: scale the hero headline so it never overflows ---- */
+@media (max-width: 480px) {
+  #t88 #top h1 { font-size: clamp(30px, 11.5vw, 46px) !important; }
+  #t88 #top h1 span { font-size: clamp(32px, 12.5vw, 50px) !important; }
+}
+
+/* ==========================================================================
+   PRODUCTS ("Any vehicle. Any season.") — mobile alternating content/image
+   Desktop keeps the sticky scroll-spy panel (.t88-prod-grid). On mobile we
+   render all 5 categories as stacked  copy → photo  pairs (.t88-prod-mobile),
+   so every category's full content and image are visible.
+   ========================================================================== */
+#t88 .t88-prod-mobile { display: none; }
+
+@media (max-width: 860px) {
+  #t88 .t88-prod-grid { display: none !important; }
+  #t88 .t88-prod-mobile { display: block; }
+
+  #t88 .t88-prod-item {
+    padding: 22px 0 28px;
+    border-top: 1px solid var(--line);
+  }
+  #t88 .t88-prod-item:first-child { border-top: none; padding-top: 0; }
+
+  #t88 .t88-prod-copy { margin-bottom: 18px; }
+  #t88 .t88-prod-num {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--tx2);
+    margin-bottom: 14px;
+  }
+  #t88 .t88-prod-tag {
+    display: inline-block;
+    margin-left: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--soft);
+    padding: 4px 11px;
+    border-radius: 999px;
+  }
+  #t88 .t88-prod-name {
+    font-family: var(--fd);
+    font-weight: 700;
+    font-size: clamp(26px, 7vw, 34px);
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    margin: 14px 0 12px;
+    color: var(--tx);
+  }
+  #t88 .t88-prod-desc {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--tx2);
+    margin: 0 0 18px;
+  }
+  #t88 .t88-prod-meta { display: flex; gap: 32px; }
+  #t88 .t88-prod-lbl {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tx2);
+    margin-bottom: 4px;
+  }
+  #t88 .t88-prod-val { font-family: var(--fd); font-weight: 700; font-size: 17px; color: var(--tx); }
+
+  #t88 .t88-prod-photo {
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--bg2);
+    aspect-ratio: 16 / 11;
+  }
+  #t88 .t88-prod-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  #t88 .t88-prod-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 30px;
+    padding: 13px 22px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    box-shadow: 0 8px 22px -8px var(--glow);
+  }
+}
