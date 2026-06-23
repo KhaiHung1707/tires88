@@ -101,6 +101,13 @@
   #t88 .t88-burger { width: 42px; height: 42px; }
   /* Prevent any horizontal-scroll rails from causing page-level overflow */
   #t88 [data-rail] { scroll-padding-left: 18px !important; }
+
+  /* Bigger header logo on mobile */
+  #t88 header img { height: 64px !important; }
+
+  /* Bigger, easier-to-tap phone numbers on mobile */
+  #t88 a[href^="tel:"] { font-size: 18px !important; }
+  #t88 a[href^="tel:"] span > div { font-size: 11px !important; }
 }
 
 /* Very narrow phones: tighten the hero wordmark + CTA row */
@@ -149,6 +156,17 @@
   #t88 [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
   /* Keep the intentional horizontal product rail scrollable (it is flex, not grid) */
   #t88 [data-rail] { display: flex !important; }
+
+  /* EXCEPTION: the big stat band (8 / 10 / 48H / 20+) stays 2 columns on phones */
+  #t88 [style*="grid-template-columns: repeat(4,1fr)"][style*="gap: 0"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 36px 20px !important;
+  }
+  /* Remove the vertical dividers — they break across the 2 rows */
+  #t88 [style*="grid-template-columns: repeat(4,1fr)"][style*="gap: 0"] > div {
+    border-left: none !important;
+    padding: 0 8px !important;
+  }
 }
 
 /* ---- Hero 3-card carousel: keep the centre card within a phone screen ---- */
