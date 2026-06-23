@@ -12,6 +12,24 @@
 #t88 header { background: #000 !important; }
 #t88 header img { height: 80px !important; }
 
+/* CALL US / EMAIL US contact buttons — bigger & consistent on all screens.
+   Scoped with :has() to the one container holding BOTH a tel: and a mailto:
+   link, so the standalone "Call" pill elsewhere is left untouched. */
+#t88 div:has(> a[href^="tel:"]):has(> a[href^="mailto:"]) > a {
+  font-size: 19px !important;
+  padding: 18px 22px !important;
+  gap: 13px !important;
+}
+/* The small uppercase label above the value ("Call us at:" / "Email us:") */
+#t88 div:has(> a[href^="tel:"]):has(> a[href^="mailto:"]) > a span > div {
+  font-size: 12px !important;
+}
+/* Scale the leading icon to match the larger text */
+#t88 div:has(> a[href^="tel:"]):has(> a[href^="mailto:"]) > a svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
 /* Hamburger button — hidden on desktop, shown on tablet/mobile */
 #t88 .t88-burger {
   display: none;
@@ -109,9 +127,6 @@
   /* Bigger header logo on mobile */
   #t88 header img { height: 80px !important; }
 
-  /* Bigger, easier-to-tap phone numbers on mobile */
-  #t88 a[href^="tel:"] { font-size: 18px !important; }
-  #t88 a[href^="tel:"] span > div { font-size: 11px !important; }
 }
 
 /* Very narrow phones: tighten the hero wordmark + CTA row */
@@ -161,13 +176,16 @@
   /* Keep the intentional horizontal product rail scrollable (it is flex, not grid) */
   #t88 [data-rail] { display: flex !important; }
 
-  /* EXCEPTION: the big stat band (8 / 10 / 48H / 20+) stays 2 columns on phones */
-  #t88 [style*="grid-template-columns: repeat(4,1fr)"][style*="gap: 0"] {
+  /* EXCEPTION: the big stat band (8 / 10 / 48H / 20+) stays 2 columns on phones.
+     Targeted via :has(data-count) so it works regardless of how the runtime
+     serialises the inline grid-template-columns string. */
+  #t88 div:has(> div > [data-count]) {
+    display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 36px 20px !important;
   }
   /* Remove the vertical dividers — they break across the 2 rows */
-  #t88 [style*="grid-template-columns: repeat(4,1fr)"][style*="gap: 0"] > div {
+  #t88 div:has(> div > [data-count]) > div {
     border-left: none !important;
     padding: 0 8px !important;
   }
