@@ -65,3 +65,4 @@ Trang dùng **dc-runtime** (runtime của Claude Design, React-based) để rend
 - **Sửa responsive / mobile menu:** chỉnh `assets/css/styles.css`. Các rule layout gốc (stack grid, padding) nằm trong `<style>` ngay trong `index.html` (block media-query 980/640).
 
 > Lưu ý: `dc-runtime.js` là code generated — đừng sửa tay. Nếu cần đổi React version, thay file trong `assets/vendor/` và (nếu cần) cập nhật URL trong `dc-runtime.js`.
+# tires88-structure
