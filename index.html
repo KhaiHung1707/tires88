@@ -79,7 +79,7 @@
   @media (max-width:640px){
     #t88 header [style*="max-width: 1440px"]{padding:11px 16px !important;gap:10px !important}
     #t88 header a[style*="0 8px 22px -8px var(--glow)"]{padding:9px 15px !important;font-size:13.5px !important}
-    #t88 header img{height:46px !important}
+    #t88 header img{height:60px !important}
     /* Even tighter side padding */
     #t88 [style*="padding: 0px 56px"]{padding-left:18px !important;padding-right:18px !important}
     #t88 [style*="padding: 74px 56px 0px"]{padding:44px 18px 0 !important}
@@ -96,13 +96,18 @@
     #t88 [style*="grid-template-columns: repeat(3,1fr)"]{grid-template-columns:1fr !important}
     #t88 [style*="grid-template-columns: 1.1fr 1fr 1fr 1fr auto"]{grid-template-columns:1fr !important}
     #t88 [style*="grid-template-columns: 1fr 1fr; gap: 14px"]{grid-template-columns:1fr !important}
-    /* Stat band: stacked items get breathing room + dividers */
-    #t88 [style*="grid-template-columns: repeat(4,1fr); gap: 0"]{gap:28px !important}
+    /* Stat band: 2 columns on mobile with breathing room */
+    #t88 [style*="grid-template-columns: repeat(4,1fr); gap: 0"]{grid-template-columns:repeat(2,1fr) !important;gap:36px 20px !important}
+    /* Drop left dividers in 2-col stat band (they break across rows) */
+    #t88 [style*="grid-template-columns: repeat(4,1fr); gap: 0"] > div{border-left:none !important;padding:0 8px !important}
     /* Contact tiles: stack the call/email buttons */
     #t88 [style*="display: flex; gap: 12px; flex-wrap: wrap"] a[href^="tel:"],
     #t88 [style*="display: flex; gap: 12px; flex-wrap: wrap"] a[href^="mailto:"]{flex:1 1 100% !important}
     /* Closing wordmark shouldn't overflow */
     #t88 [style*="font-size: clamp(80px,20vw,280px)"]{font-size:clamp(56px,22vw,120px) !important}
+    /* Bigger phone numbers on mobile */
+    #t88 a[href^="tel:"]{font-size:18px !important}
+    #t88 a[href^="tel:"] span > div{font-size:11px !important}
   }
 </style>
 </helmet>
